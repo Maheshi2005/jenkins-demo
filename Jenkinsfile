@@ -1,12 +1,9 @@
 pipeline {
   agent any
-
   stages {
-    stage('Build') {
-      steps { echo 'Building project...' }
-    }
+    stage('Build'){ steps { echo 'Building project...' } }
 
-    stage('Test') {
+    stage('Test'){
       steps {
         echo 'Running tests...'
         script {
@@ -17,6 +14,12 @@ pipeline {
       }
       post {
         always {
+          // BASIC MAIL (sanity)
+          mail to: 'ayodyaekanayaka8@gmail.com',
+               subject: "SANITY: Test stage finished - ${currentBuild.currentResult}",
+               body: "Hello from Jenkins basic mail step."
+
+          // EMAIL-EXT (rich)
           emailext(
             to: 'ayodyaekanayaka8@gmail.com',
             from: 'ayodyaekanayaka8@gmail.com',
@@ -32,7 +35,7 @@ pipeline {
       }
     }
 
-    stage('Security Scan') {
+    stage('Security Scan'){
       steps {
         echo 'Running security scan...'
         script {
@@ -43,6 +46,12 @@ pipeline {
       }
       post {
         always {
+          // BASIC MAIL (sanity)
+          mail to: 'ayodyaekanayaka8@gmail.com',
+               subject: "SANITY: Security scan finished - ${currentBuild.currentResult}",
+               body: "Hello from Jenkins basic mail step (security)."
+
+          // EMAIL-EXT (rich)
           emailext(
             to: 'ayodyaekanayaka8@gmail.com',
             from: 'ayodyaekanayaka8@gmail.com',
