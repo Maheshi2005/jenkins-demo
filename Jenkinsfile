@@ -19,7 +19,7 @@ pipeline {
             post {
                 always {
                     emailext(
-                        to: 'yourgmail@gmail.com',
+                        to: 'ayodyaekanayaka8@gmail.com',
                         subject: "Test Stage - ${currentBuild.currentResult}",
                         body: """<p>Test stage completed.</p>
                                  <p>Status: ${currentBuild.currentResult}</p>
