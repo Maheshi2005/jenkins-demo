@@ -24,6 +24,8 @@ pipeline {
         always {
           emailext(
             to: 'ayodyaekanayaka8@gmail.com',
+            from: 'ayodyaekanayaka8@gmail.com',
+            mimeType: 'text/html',
             subject: "Test Stage - ${currentBuild.currentResult}",
             body: """<p>Test stage completed with status: <b>${currentBuild.currentResult}</b>.</p>
                      <p><a href="${env.BUILD_URL}">Open build</a></p>""",
@@ -51,6 +53,8 @@ pipeline {
         always {
           emailext(
             to: 'ayodyaekanayaka8@gmail.com',
+            from: 'ayodyaekanayaka8@gmail.com',
+            mimeType: 'text/html',
             subject: "Security Scan - ${currentBuild.currentResult}",
             body: """<p>Security scan finished with status: <b>${currentBuild.currentResult}</b>.</p>
                      <p><a href="${env.BUILD_URL}">Open build</a></p>""",
@@ -63,4 +67,3 @@ pipeline {
     }
   }
 }
-// trigger build 
