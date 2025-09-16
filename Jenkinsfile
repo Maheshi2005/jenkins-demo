@@ -1,9 +1,12 @@
 pipeline {
   agent any
-  stages {
-    stage('Build'){ steps { echo 'Building project...' } }
 
-    stage('Test'){
+  stages {
+    stage('Build') {
+      steps { echo 'Building project...' }
+    }
+
+    stage('Test') {
       steps {
         echo 'Running tests...'
         script {
@@ -14,28 +17,20 @@ pipeline {
       }
       post {
         always {
-          // BASIC MAIL (sanity)
-          mail to: 'ayodyaekanayaka8@gmail.com',
-               subject: "SANITY: Test stage finished - ${currentBuild.currentResult}",
-               body: "Hello from Jenkins basic mail step."
-
-          // EMAIL-EXT (rich)
           emailext(
-            to: 'ayodyaekanayaka8@gmail.com',
-            from: 'ayodyaekanayaka8@gmail.com',
-            mimeType: 'text/html',
+            to: '${DEFAULT_RECIPIENTS}',
             subject: "Test Stage - ${currentBuild.currentResult}",
-            body: """<p>Test stage completed with status: <b>${currentBuild.currentResult}</b>.</p>
+            mimeType: 'text/html',
+            body: """<p>Test stage completed: <b>${currentBuild.currentResult}</b></p>
                      <p><a href="${env.BUILD_URL}">Open build</a></p>""",
-            attachLog: true,
-            compressLog: true,
-            attachmentsPattern: 'test-results.log'
+            attachmentsPattern: 'test-results.log',
+            attachLog: true, compressLog: true
           )
         }
       }
     }
 
-    stage('Security Scan'){
+    stage('Security Scan') {
       steps {
         echo 'Running security scan...'
         script {
@@ -46,22 +41,14 @@ pipeline {
       }
       post {
         always {
-          // BASIC MAIL (sanity)
-          mail to: 'ayodyaekanayaka8@gmail.com',
-               subject: "SANITY: Security scan finished - ${currentBuild.currentResult}",
-               body: "Hello from Jenkins basic mail step (security)."
-
-          // EMAIL-EXT (rich)
           emailext(
-            to: 'ayodyaekanayaka8@gmail.com',
-            from: 'ayodyaekanayaka8@gmail.com',
-            mimeType: 'text/html',
+            to: '${DEFAULT_RECIPIENTS}',
             subject: "Security Scan - ${currentBuild.currentResult}",
-            body: """<p>Security scan finished with status: <b>${currentBuild.currentResult}</b>.</p>
+            mimeType: 'text/html',
+            body: """<p>Security scan finished: <b>${currentBuild.currentResult}</b></p>
                      <p><a href="${env.BUILD_URL}">Open build</a></p>""",
-            attachLog: true,
-            compressLog: true,
-            attachmentsPattern: 'scan-report.log'
+            attachmentsPattern: 'scan-report.log',
+            attachLog: true, compressLog: true
           )
         }
       }
